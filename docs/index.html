@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow MCP Server - Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 60px 20px; color: white; animation: fadeIn 1s ease-in; }
+        h1 { font-size: 3rem; margin-bottom: 10px; animation: slideDown 0.8s ease-out; }
+        .tagline { font-size: 1.2rem; opacity: 0.9; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-card h3 { color: #667eea; margin-bottom: 15px; font-size: 1.5rem; }
+        .feature-card li { padding: 5px 0; padding-left: 20px; position: relative; }
+        .feature-card li:before { content: "✓"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        .cta { text-align: center; margin: 60px 0; }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .cta-button:hover { transform: translateY(-3px); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        footer { text-align: center; padding: 40px 20px; color: white; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ServiceNow MCP Server</h1>
+            <p class="tagline">Production-ready Model Context Protocol integration for ServiceNow</p>
+        </header>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>🔒 Secure by Default</h3>
+                <ul>
+                    <li>Read-only by default</li>
+                    <li>OAuth 2.0 support</li>
+                    <li>Credential redaction</li>
+                    <li>Table allowlisting</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>🏢 Core Platform</h3>
+                <ul>
+                    <li>Table schema discovery</li>
+                    <li>Query with filters</li>
+                    <li>User & group lookup</li>
+                    <li>Record retrieval</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>💻 CMDB</h3>
+                <ul>
+                    <li>CI search & retrieval</li>
+                    <li>Relationship mapping</li>
+                    <li>Configuration details</li>
+                    <li>Health metrics</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>🔧 ITOM</h3>
+                <ul>
+                    <li>Discovery schedules</li>
+                    <li>MID server status</li>
+                    <li>Event Management</li>
+                    <li>Service Mapping</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>📝 ITSM</h3>
+                <ul>
+                    <li>Change request creation</li>
+                    <li>Incident management</li>
+                    <li>Problem tracking</li>
+                    <li>Script execution</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3>🌐 Portal & Knowledge</h3>
+                <ul>
+                    <li>Service Portal access</li>
+                    <li>Page information</li>
+                    <li>Knowledge base search</li>
+                    <li>Article retrieval</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a href="https://github.com/habenani-p/servicenow-mcp" class="cta-button">View on GitHub</a>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ for the ServiceNow community</p>
+            <p>MIT License | <a href="https://github.com/habenani-p/servicenow-mcp" style="color: white;">GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
