@@ -9,7 +9,7 @@ export interface ServiceNowConfig {
 }
 
 export class ServiceNowClient {
-  constructor(config: ServiceNowConfig) {
-    console.log('ServiceNow client initialized');
+  constructor(_config: ServiceNowConfig) {
+    // Client initialization is silent
   }
 }

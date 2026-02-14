@@ -8,6 +8,6 @@ export function getTools() {
   ];
 }
 
-export async function executeTool(client: any, name: string, args: any) {
+export async function executeTool(_client: any, _name: string, _args: any) {
   return { status: 'Tool execution placeholder' };
 }
