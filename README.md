@@ -80,37 +80,6 @@ npm run build
 
 **Next Steps**: See [INSTALLATION.md](docs/INSTALLATION.md) for Claude Desktop configuration, OAuth setup, and testing.
 
-## Configuration
-
-### OAuth Setup (Recommended)
-
-Before configuring the MCP server, you need to create an OAuth application in ServiceNow:
-
-**📖 [Complete OAuth Setup Guide](docs/SERVICENOW_OAUTH_SETUP.md)**
-
-Quick steps:
-1. Log into ServiceNow as admin
-2. Navigate to **System OAuth > Application Registry**
-3. Create new OAuth endpoint for external clients
-4. Copy the Client ID and Client Secret
-5. Configure your `.env` file (see below)
-
-### Environment Configuration
-
-See `.env.example` for all configuration options.
-
-Quick start:
-
-\`\`\`bash
-SERVICENOW_INSTANCE_URL=https://your-instance.service-now.com
-SERVICENOW_AUTH_METHOD=oauth
-SERVICENOW_CLIENT_ID=your_client_id
-SERVICENOW_CLIENT_SECRET=your_client_secret
-SERVICENOW_USERNAME=your_username
-SERVICENOW_PASSWORD=your_password
-WRITE_ENABLED=false
-\`\`\`
-
 ## Documentation
 
 - **[Installation Guide](docs/INSTALLATION.md)** - Complete setup instructions (first-time users start here)
