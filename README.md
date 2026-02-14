@@ -60,29 +60,9 @@ This guide covers everything from installing Claude Desktop for the first time t
 - Update records with natural instructions
 - Script file updates
 
-## Installation
-
-For detailed step-by-step instructions, see the **[Complete Installation Guide](docs/INSTALLATION.md)**.
-
-### Quick Setup
-
-\`\`\`bash
-# Clone the repository
-git clone https://github.com/habenani-p/servicenow-mcp.git
-cd servicenow-mcp
-
-# Install dependencies
-npm install
-
-# Build
-npm run build
-\`\`\`
-
-**Next Steps**: See [INSTALLATION.md](docs/INSTALLATION.md) for Claude Desktop configuration, OAuth setup, and testing.
-
 ## Documentation
 
-- **[Installation Guide](docs/INSTALLATION.md)** - Complete setup instructions (first-time users start here)
+- **[Installation Guide](docs/INSTALLATION.md)** - Complete setup instructions
 - **[OAuth Setup Guide](docs/SERVICENOW_OAUTH_SETUP.md)** - ServiceNow OAuth 2.0 configuration
 - **[Usage Examples](EXAMPLES.md)** - 16+ detailed examples and workflows
 - **[Security Policy](SECURITY.md)** - Security best practices
