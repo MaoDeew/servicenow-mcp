@@ -278,4 +278,447 @@ export class ServiceNowClient {
       );
     }
   }
+
+  /**
+   * Get table schema/structure
+   */
+  async getTableSchema(tableName: string): Promise<any> {
+    await this.authenticate();
+
+    const url = `${this.baseUrl}/api/now/table/${tableName}?sysparm_exclude_reference_link=true&sysparm_limit=1`;
+
+    logger.info(`Getting schema for table: ${tableName}`);
+
+    try {
+      // Get table structure by querying with limit=1
+      const response = await this.request<ServiceNowApiResponse<any[]>>(url);
+
+      // Extract field names and types from the result
+      if (response.result && response.result.length > 0) {
+        const sample = response.result[0];
+        const columns = Object.keys(sample).map(key => ({
+          element: key,
+          value_sample: sample[key],
+        }));
+
+        return {
+          table: tableName,
+          columns,
+        };
+      }
+
+      return {
+        table: tableName,
+        columns: [],
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get table schema: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get a single record by sys_id
+   */
+  async getRecord(table: string, sysId: string, fields?: string): Promise<ServiceNowRecord> {
+    await this.authenticate();
+
+    const queryParams = new URLSearchParams();
+    if (fields) {
+      queryParams.set('sysparm_fields', fields);
+    }
+
+    const url = `${this.baseUrl}/api/now/table/${table}/${sysId}${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+
+    logger.info(`Getting record from ${table}: ${sysId}`);
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord>>(url);
+      return response.result;
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get record: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get user details by email or username
+   */
+  async getUser(userIdentifier: string): Promise<ServiceNowRecord> {
+    await this.authenticate();
+
+    // Try both email and user_name
+    const query = `email=${userIdentifier}^ORemail=${userIdentifier}`;
+    const url = `${this.baseUrl}/api/now/table/sys_user?sysparm_query=${query}&sysparm_limit=1`;
+
+    logger.info(`Looking up user: ${userIdentifier}`);
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      if (response.result.length === 0) {
+        throw new ServiceNowError(`User not found: ${userIdentifier}`, 'NOT_FOUND');
+      }
+
+      return response.result[0];
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get user: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get group details by name or sys_id
+   */
+  async getGroup(groupIdentifier: string): Promise<ServiceNowRecord> {
+    await this.authenticate();
+
+    // Check if it's a sys_id (32 hex chars) or name
+    const isSysId = /^[0-9a-f]{32}$/i.test(groupIdentifier);
+    const query = isSysId ? `sys_id=${groupIdentifier}` : `name=${groupIdentifier}`;
+    const url = `${this.baseUrl}/api/now/table/sys_user_group?sysparm_query=${query}&sysparm_limit=1`;
+
+    logger.info(`Looking up group: ${groupIdentifier}`);
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      if (response.result.length === 0) {
+        throw new ServiceNowError(`Group not found: ${groupIdentifier}`, 'NOT_FOUND');
+      }
+
+      return response.result[0];
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get group: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Search CMDB configuration items
+   */
+  async searchCmdbCi(query?: string, limit: number = 10): Promise<QueryRecordsResponse> {
+    await this.authenticate();
+
+    const queryParams = new URLSearchParams();
+    if (query) {
+      queryParams.set('sysparm_query', query);
+    }
+    queryParams.set('sysparm_limit', Math.min(limit, 100).toString());
+
+    const url = `${this.baseUrl}/api/now/table/cmdb_ci?${queryParams.toString()}`;
+
+    logger.info('Searching CMDB CIs');
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      return {
+        count: response.result.length,
+        records: response.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to search CMDB CIs: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get a specific CMDB configuration item
+   */
+  async getCmdbCi(ciSysId: string, fields?: string): Promise<ServiceNowRecord> {
+    return this.getRecord('cmdb_ci', ciSysId, fields);
+  }
+
+  /**
+   * List relationships for a CI
+   */
+  async listRelationships(ciSysId: string): Promise<any> {
+    await this.authenticate();
+
+    const query = `parent=${ciSysId}^ORchild=${ciSysId}`;
+    const url = `${this.baseUrl}/api/now/table/cmdb_rel_ci?sysparm_query=${query}`;
+
+    logger.info(`Listing relationships for CI: ${ciSysId}`);
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      return {
+        count: response.result.length,
+        relationships: response.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to list relationships: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * List discovery schedules
+   */
+  async listDiscoverySchedules(activeOnly: boolean = false): Promise<any> {
+    await this.authenticate();
+
+    const query = activeOnly ? 'active=true' : '';
+    const url = `${this.baseUrl}/api/now/table/discovery_schedule${query ? '?sysparm_query=' + query : ''}`;
+
+    logger.info('Listing discovery schedules');
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      return {
+        count: response.result.length,
+        schedules: response.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to list discovery schedules: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * List MID servers
+   */
+  async listMidServers(activeOnly: boolean = false): Promise<any> {
+    await this.authenticate();
+
+    const query = activeOnly ? 'status=Up' : '';
+    const url = `${this.baseUrl}/api/now/table/ecc_agent${query ? '?sysparm_query=' + query : ''}`;
+
+    logger.info('Listing MID servers');
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      return {
+        count: response.result.length,
+        mid_servers: response.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to list MID servers: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * List active events
+   */
+  async listActiveEvents(query?: string, limit: number = 10): Promise<QueryRecordsResponse> {
+    await this.authenticate();
+
+    const queryParams = new URLSearchParams();
+    if (query) {
+      queryParams.set('sysparm_query', query);
+    }
+    queryParams.set('sysparm_limit', limit.toString());
+
+    const url = `${this.baseUrl}/api/now/table/em_event?${queryParams.toString()}`;
+
+    logger.info('Listing active events');
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(url);
+
+      return {
+        count: response.result.length,
+        records: response.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to list events: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get CMDB health dashboard metrics
+   */
+  async cmdbHealthDashboard(): Promise<any> {
+    await this.authenticate();
+
+    logger.info('Getting CMDB health metrics');
+
+    try {
+      // Get server metrics
+      const serversUrl = `${this.baseUrl}/api/now/table/cmdb_ci_server?sysparm_fields=sys_id,ip_address,os,serial_number`;
+      const serversResponse = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(serversUrl);
+
+      const servers = serversResponse.result;
+      const serversWithIp = servers.filter(s => s.ip_address).length;
+      const serversWithOs = servers.filter(s => s.os).length;
+      const serversWithSerial = servers.filter(s => s.serial_number).length;
+
+      // Get network device metrics
+      const networkUrl = `${this.baseUrl}/api/now/table/cmdb_ci_network_adapter?sysparm_fields=sys_id,ip_address,mac_address&sysparm_limit=100`;
+      const networkResponse = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(networkUrl);
+
+      const network = networkResponse.result;
+      const networkWithIp = network.filter(n => n.ip_address).length;
+      const networkWithMac = network.filter(n => n.mac_address).length;
+
+      return {
+        server_metrics: {
+          total: servers.length,
+          with_ip: serversWithIp,
+          with_os: serversWithOs,
+          with_serial: serversWithSerial,
+          ip_completeness: servers.length > 0 ? ((serversWithIp / servers.length) * 100).toFixed(2) : '0',
+          os_completeness: servers.length > 0 ? ((serversWithOs / servers.length) * 100).toFixed(2) : '0',
+        },
+        network_metrics: {
+          total: network.length,
+          with_ip: networkWithIp,
+          with_mac: networkWithMac,
+          ip_completeness: network.length > 0 ? ((networkWithIp / network.length) * 100).toFixed(2) : '0',
+          mac_completeness: network.length > 0 ? ((networkWithMac / network.length) * 100).toFixed(2) : '0',
+        },
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get CMDB health: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Get service mapping summary
+   */
+  async serviceMappingSummary(serviceSysId: string): Promise<any> {
+    await this.authenticate();
+
+    logger.info(`Getting service mapping summary for: ${serviceSysId}`);
+
+    try {
+      // Get service details
+      const serviceUrl = `${this.baseUrl}/api/now/table/cmdb_ci_service/${serviceSysId}`;
+      const serviceResponse = await this.request<ServiceNowApiResponse<ServiceNowRecord>>(serviceUrl);
+
+      // Get related CIs
+      const relatedUrl = `${this.baseUrl}/api/now/table/cmdb_rel_ci?sysparm_query=parent=${serviceSysId}^ORchild=${serviceSysId}`;
+      const relatedResponse = await this.request<ServiceNowApiResponse<ServiceNowRecord[]>>(relatedUrl);
+
+      return {
+        service: serviceResponse.result,
+        related_cis_count: relatedResponse.result.length,
+        related_cis: relatedResponse.result,
+      };
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to get service mapping: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Create a change request
+   */
+  async createChangeRequest(params: any): Promise<ServiceNowRecord> {
+    await this.authenticate();
+
+    logger.info('Creating change request');
+
+    const url = `${this.baseUrl}/api/now/table/change_request`;
+
+    try {
+      const response = await this.request<ServiceNowApiResponse<ServiceNowRecord>>(url, {
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+
+      return response.result;
+    } catch (error) {
+      if (error instanceof ServiceNowError) {
+        throw error;
+      }
+      throw new ServiceNowError(
+        `Failed to create change request: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        'QUERY_FAILED'
+      );
+    }
+  }
+
+  /**
+   * Natural language search (simplified implementation)
+   */
+  async naturalLanguageSearch(query: string, limit: number = 10): Promise<any> {
+    // For now, search across incidents - in a full implementation,
+    // this would use NLP to determine the table and build the query
+    logger.info(`Natural language search: ${query}`);
+
+    const searchQuery = `short_descriptionLIKE${query}^ORdescriptionLIKE${query}`;
+
+    return this.queryRecords({
+      table: 'incident',
+      query: searchQuery,
+      limit,
+    });
+  }
+
+  /**
+   * Natural language update (simplified implementation)
+   */
+  async naturalLanguageUpdate(_instruction: string, _table: string): Promise<any> {
+    // This is a simplified implementation - a full version would parse
+    // the instruction to extract record identifier and field updates
+    logger.warn('Natural language update is experimental and requires manual parsing');
+
+    throw new ServiceNowError(
+      'Natural language update requires custom parsing logic - not yet implemented',
+      'NOT_IMPLEMENTED'
+    );
+  }
 }

@@ -58,3 +58,74 @@ export interface ServiceNowApiError {
   };
   status: string;
 }
+
+// Core Platform Tool Params
+export interface GetRecordParams {
+  table: string;
+  sys_id: string;
+  fields?: string;
+}
+
+export interface GetUserParams {
+  user_identifier: string;
+}
+
+export interface GetGroupParams {
+  group_identifier: string;
+}
+
+// CMDB Tool Params
+export interface SearchCmdbCiParams {
+  query?: string;
+  limit?: number;
+}
+
+export interface GetCmdbCiParams {
+  ci_sys_id: string;
+  fields?: string;
+}
+
+export interface ListRelationshipsParams {
+  ci_sys_id: string;
+}
+
+// ITOM Tool Params
+export interface ListDiscoverySchedulesParams {
+  active_only?: boolean;
+}
+
+export interface ListMidServersParams {
+  active_only?: boolean;
+}
+
+export interface ListActiveEventsParams {
+  query?: string;
+  limit?: number;
+}
+
+export interface ServiceMappingSummaryParams {
+  service_sys_id: string;
+}
+
+// ITSM Tool Params
+export interface CreateChangeRequestParams {
+  short_description: string;
+  assignment_group: string;
+  description?: string;
+  category?: string;
+  priority?: string | number;
+  risk?: string | number;
+  impact?: string | number;
+  urgency?: string | number;
+}
+
+// Natural Language Tool Params
+export interface NaturalLanguageSearchParams {
+  query: string;
+  limit?: number;
+}
+
+export interface NaturalLanguageUpdateParams {
+  instruction: string;
+  table: string;
+}
